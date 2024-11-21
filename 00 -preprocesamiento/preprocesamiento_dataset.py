@@ -99,3 +99,19 @@ pipeline.fit(X_train, y_train)
 y_pred = pipeline.predict(X_test)
 print("Accuracy después de eliminar características:", accuracy_score(y_test, y_pred))
 print(classification_report(y_test, y_pred))
+
+
+
+# Procesar el dataset completo utilizando el preprocesador del pipeline
+processed_data = pipeline.named_steps['preprocessor'].fit_transform(X)
+
+# Convertir el dataset procesado a un DataFrame
+processed_df = pd.DataFrame(processed_data, columns=pipeline.named_steps['preprocessor'].get_feature_names_out())
+
+# Agregar la columna objetivo 'class' al DataFrame procesado
+processed_df['class'] = y.values
+
+# Guardar el DataFrame procesado en un archivo CSV
+processed_df.to_csv('Processed_Yellow_Submarine.csv', index=False)
+
+print("El dataset procesado ha sido guardado en 'Processed_Yellow_Submarine.csv'.")
